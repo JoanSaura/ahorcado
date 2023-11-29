@@ -71,7 +71,17 @@ body {
    #errores {
     color: tomato;
   }
+  .correcta {
+    background-color: springgreen;
+    color: #30303b;
+    pointer-events: none;
+  }
+  .incorrecta {
+    background-color: rgb(242, 68, 68);
+    pointer-events: none;
+  }
   .letra:hover {
     transform: scale(1.2);
+    cursor: pointer;
   }
   

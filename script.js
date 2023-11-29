@@ -1,28 +1,66 @@
-//Capturamos elementos del HTML
+// Capturamos elementos del HTML
 const intentos = document.getElementById("intentos");
 const cronometro = document.getElementById("cronometro");
 const palabraElemento = document.getElementById("palabra");
 const teclado = document.getElementById("teclado");
+const letras = document.querySelectorAll('.letra');
 const mensaje = document.getElementById("mensaje");
 const errores = document.getElementById("errores");
 const selector = document.getElementById("selector");
 const imagenAhorcado = document.getElementById("dibujo").querySelector("img");
 
-//Array de las letras que son correctas
+// Array de las letras que son correctas
 let letrasCorrectas = [];
-//Definimos el maximo numero de intentos
+// Definimos el máximo número de intentos
 let maxIntentos = 7;
 intentos.textContent = maxIntentos;
 // Segundos que han pasado
 let segundosTranscurridos = 0;
 const tiempoRestarIntento = 7;
-//Implementamos el cronometro
+// Implementamos el cronómetro
 let tiempoInicio;
+let cronometroInterval;
+ElegirLetra();
+
+// Para registrar la letra que el usuario presiona
+function ElegirLetra() {
+  teclado.addEventListener("click", (e) => {
+    if (e.target.classList.contains("letra")) {
+      let letraUsada = e.target.textContent;
+      ComprobarLetra(letraUsada.toLowerCase()); // Convertir la letra a minúsculas
+    }
+  });
+}
+
+function ComprobarLetra(letra) {
+  if (palabraSeleccionada.includes(letra)) {
+    letrasCorrectas.push(letra);
+    mostrarPalabraConGuiones();
+    // Agrega la clase "correcta" a la letra seleccionada
+    teclado.querySelectorAll('.letra').forEach((element) => {
+      if (element.textContent.toLowerCase() === letra) { // Convertir la letra a minúsculas
+        element.classList.add('correcta');
+      }
+    });
+  } else {
+    restarIntento();
+    errores.textContent = 7 - maxIntentos;
+    // Agrega la clase "incorrecta" a la letra seleccionada
+    teclado.querySelectorAll('.letra').forEach((element) => {
+      if (element.textContent.toLowerCase() === letra) { // Convertir la letra a minúsculas
+        element.classList.add('incorrecta');
+      }
+    });
+  }
+}
+
+
 function iniciarCronometro() {
   tiempoInicio = new Date();
   // Actualiza el cronómetro cada segundo
-  setInterval(actualizarCronometro, 1000);
+  cronometroInterval = setInterval(actualizarCronometro, 1000);
 }
+
 function actualizarCronometro() {
   const tiempoActual = new Date();
   const diferencia = tiempoActual - tiempoInicio;
@@ -61,6 +99,7 @@ function mostrarPalabraConGuiones() {
   }
 }
 
+
 // Función para rellenar ceros en los dígitos menores a 10
 function rellenarCeros(valor) {
   return valor < 10 ? `0${valor}` : valor;
@@ -76,8 +115,7 @@ const tematicas = {
     "gucci",
     "zara",
     "puma",
-    "h&m",
-    "calvin klein",
+    "hym"
   ],
   paises: ["francia", "alemania", "italia", "japon", "china", "brasil"],
   marcasdemotos: [
@@ -91,36 +129,40 @@ const tematicas = {
   ],
 };
 //Para elegir tematicas
-function elegirTematica(tematica) {
-  const palabras = tematicas[tematica];
-  //Coje una palabra/nombre que tiene la tematica y
-  palabraSeleccionada = palabras[Math.floor(Math.random() * palabras.length)];
-  //Chivato para mostrar la palabra selecionada
-  console.log(palabraSeleccionada);
-  // Ocultar el pop-up
-  selector.style.display = "none";
+  function elegirTematica(tematica) {
+    const palabras = tematicas[tematica];
+    //Coje una palabra/nombre que tiene la tematica y
+    palabraSeleccionada = palabras[Math.floor(Math.random() * palabras.length)];
+    //Chivato para mostrar la palabra selecionada
+    console.log(palabraSeleccionada);
+    // Ocultar el pop-up
+    selector.style.display = "none";
 
-  mostrarPalabraConGuiones();
-  iniciarCronometro();
-}
-//Mostar palabaras en guiones
-function mostrarPalabraConGuiones() {
-  const palabraguiones = " - ".repeat(palabraSeleccionada.length);
-  document.getElementById("palabra").textContent = palabraguiones;
-}
-//Funcion para restar intentos
-function restarIntento() {
-  maxIntentos--;
-  intentos.textContent = maxIntentos;
-  // Verificar si aún hay intentos restantes
-  imagenAhorcado.src = `img/${8 - maxIntentos}.png`;
-  intentos.textContent = maxIntentos;
-  // Verificamos si se han agotado los intentos
-  if (maxIntentos == 0) {
-    lancarGameOver();
-    clearInterval(cronometroInterval); 
+    mostrarPalabraConGuiones();
+    iniciarCronometro();
   }
-}
+  //Mostar palabaras en guiones
+  function mostrarPalabraConGuiones() {
+    const palabraguiones = " - ".repeat(palabraSeleccionada.length);
+    document.getElementById("palabra").textContent = palabraguiones;
+  }
+  function restarIntento() {
+    maxIntentos--;
+    intentos.textContent = maxIntentos;
+    // Verificar si aún hay intentos restantes
+    imagenAhorcado.src = `img/${8 - maxIntentos}.png`;
+    intentos.textContent = maxIntentos;
+  
+    if (maxIntentos === 0) {
+      teclado.removeEventListener("click", ElegirLetra);
+    }
+  
+    // Verificamos si se han agotado los intentos
+    if (maxIntentos == 0) {
+      lancarGameOver();
+      clearInterval(cronometroInterval);
+    }
+  }
 //Lanzar fin del juego cuando los intentos llegan a 0
 function lancarGameOver() {
   alert("Has perdido, la palabra era " + palabraSeleccionada);
