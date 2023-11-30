@@ -3,10 +3,10 @@ const intentos = document.getElementById("intentos");
 const cronometro = document.getElementById("cronometro");
 const palabraElemento = document.getElementById("palabra");
 const teclado = document.getElementById("teclado");
-const letras = document.querySelectorAll('.letra');
-const mensaje = document.getElementById("mensaje");
 const errores = document.getElementById("errores");
 const selector = document.getElementById("selector");
+const perdida = document.getElementById("perdida");
+const victoria = document.getElementById("victoria");
 const imagenAhorcado = document.getElementById("dibujo").querySelector("img");
 
 // Array de las letras que son correctas
@@ -20,25 +20,25 @@ const tiempoRestarIntento = 7;
 // Implementamos el cronómetro
 let tiempoInicio;
 let cronometroInterval;
-ElegirLetra();
+
+// Variable para almacenar la palabra seleccionada
+let palabraSeleccionada;
 
 // Para registrar la letra que el usuario presiona
-function ElegirLetra() {
-  teclado.addEventListener("click", (e) => {
-    if (e.target.classList.contains("letra")) {
-      let letraUsada = e.target.textContent;
-      ComprobarLetra(letraUsada.toLowerCase()); // Convertir la letra a minúsculas
-    }
-  });
-}
-
+teclado.addEventListener("click", (e) => {
+  if (e.target.classList.contains("letra")) {
+    let letraUsada = e.target.textContent;
+    ComprobarLetra(letraUsada.toLowerCase()); // Convertir la letra a minúsculas para que la pueda leer
+  }
+});
+//El usuario inserta una letra
 function ComprobarLetra(letra) {
   if (palabraSeleccionada.includes(letra)) {
     letrasCorrectas.push(letra);
     mostrarPalabraConGuiones();
     // Agrega la clase "correcta" a la letra seleccionada
     teclado.querySelectorAll('.letra').forEach((element) => {
-      if (element.textContent.toLowerCase() === letra) { // Convertir la letra a minúsculas
+      if (element.textContent.toLowerCase() === letra) {
         element.classList.add('correcta');
       }
     });
@@ -47,13 +47,12 @@ function ComprobarLetra(letra) {
     errores.textContent = 7 - maxIntentos;
     // Agrega la clase "incorrecta" a la letra seleccionada
     teclado.querySelectorAll('.letra').forEach((element) => {
-      if (element.textContent.toLowerCase() === letra) { // Convertir la letra a minúsculas
+      if (element.textContent.toLowerCase() === letra) {
         element.classList.add('incorrecta');
       }
     });
   }
 }
-
 
 function iniciarCronometro() {
   tiempoInicio = new Date();
@@ -80,6 +79,7 @@ function actualizarCronometro() {
 
   cronometro.textContent = tiempoFormateado;
 }
+
 // Función para mostrar la palabra con guiones bajos y letras adivinadas
 function mostrarPalabraConGuiones() {
   let palabraMostrada = "";
@@ -94,76 +94,69 @@ function mostrarPalabraConGuiones() {
 
   // Verificamos si el jugador ha adivinado todas las letras
   if (!palabraMostrada.includes("_")) {
-    // Aquí puedes agregar la lógica para mostrar un mensaje de victoria
-    mostrarMensaje("¡Has ganado!");
+    HasGanado();
+    
   }
 }
-
 
 // Función para rellenar ceros en los dígitos menores a 10
 function rellenarCeros(valor) {
   return valor < 10 ? `0${valor}` : valor;
 }
 
-//Declaramos las tematiacas
+//Declaramos las temáticas
 const tematicas = {
   animales: ["león", "elefante", "jirafa", "tigre", "perro", "gato", "pájaro"],
   coches: ["tesla", "ford", "honda", "bmw", "audi", "toyota", "chevrolet"],
-  marcasropa: [
-    "nike",
-    "adidas",
-    "gucci",
-    "zara",
-    "puma",
-    "hym"
-  ],
+  marcasropa: ["nike", "adidas", "gucci", "zara", "puma", "hym"],
   paises: ["francia", "alemania", "italia", "japon", "china", "brasil"],
-  marcasdemotos: [
-    "harley",
-    "honda",
-    "yamaha",
-    "kawasaki",
-    "suzuki",
-    "Ducati",
-    "BMW",
-  ],
+  marcasdemotos: ["harley", "honda", "yamaha", "kawasaki", "suzuki", "Ducati", "BMW"],
 };
-//Para elegir tematicas
-  function elegirTematica(tematica) {
-    const palabras = tematicas[tematica];
-    //Coje una palabra/nombre que tiene la tematica y
-    palabraSeleccionada = palabras[Math.floor(Math.random() * palabras.length)];
-    //Chivato para mostrar la palabra selecionada
-    console.log(palabraSeleccionada);
-    // Ocultar el pop-up
-    selector.style.display = "none";
 
-    mostrarPalabraConGuiones();
-    iniciarCronometro();
+//Para elegir temáticas
+function elegirTematica(tematica) {
+  const palabras = tematicas[tematica];
+  //Coge una palabra/nombre que tiene la temática y
+  palabraSeleccionada = palabras[Math.floor(Math.random() * palabras.length)];
+  //Chivato para mostrar la palabra seleccionada
+  console.log( "La palabra selecioanda es : " +palabraSeleccionada);
+  // Ocultar el pop-up
+  selector.style.display = "none";
+
+  mostrarPalabraConGuiones();
+  iniciarCronometro();
+}
+
+function restarIntento() {
+  maxIntentos--;
+  intentos.textContent = maxIntentos;
+  // Verificar si aún hay intentos restantes
+  imagenAhorcado.src = `img/${8 - maxIntentos}.png`;
+  intentos.textContent = maxIntentos;
+
+  if (maxIntentos === 0) {
+    ocultarElementos();
+    perdida.style.display = 'flex'; 
   }
-  //Mostar palabaras en guiones
-  function mostrarPalabraConGuiones() {
-    const palabraguiones = " - ".repeat(palabraSeleccionada.length);
-    document.getElementById("palabra").textContent = palabraguiones;
+  // Verificamos si se han agotado los intentos
+  if (maxIntentos == 0) {
+    clearInterval(cronometroInterval);
   }
-  function restarIntento() {
-    maxIntentos--;
-    intentos.textContent = maxIntentos;
-    // Verificar si aún hay intentos restantes
-    imagenAhorcado.src = `img/${8 - maxIntentos}.png`;
-    intentos.textContent = maxIntentos;
-  
-    if (maxIntentos === 0) {
-      teclado.removeEventListener("click", ElegirLetra);
-    }
-  
-    // Verificamos si se han agotado los intentos
-    if (maxIntentos == 0) {
-      lancarGameOver();
-      clearInterval(cronometroInterval);
-    }
-  }
-//Lanzar fin del juego cuando los intentos llegan a 0
-function lancarGameOver() {
-  alert("Has perdido, la palabra era " + palabraSeleccionada);
+}
+//Lanzar pantalla de victoria
+function HasGanado() {
+  ocultarElementos(); 
+  victoria.style.display = 'flex';
+}
+  // Oculta los elementos al ganar/perder
+function ocultarElementos() {
+  intentos.style.display = 'none';
+  cronometro.style.display = 'none';
+  palabraElemento.style.display = 'none';
+  teclado.style.display = 'none';
+  errores.style.display = 'none';
+  selector.style.display = 'none';
+  perdida.style.display = 'none';
+  victoria.style.display = 'none';
+  imagenAhorcado.style.display = 'none';
 }

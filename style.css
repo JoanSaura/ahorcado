@@ -1,7 +1,7 @@
 body {
     background-color: rgb(29, 34, 34);
   }
-  #selector {
+  #selector, #perdida, #victoria {
     position: fixed;
     top: 0;
     left: 0;
@@ -14,12 +14,25 @@ body {
     justify-content: center;
     color: white;
   }
+  #perdida , #victoria {
+    display: none;
+  }
+  #selector h4 {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 35px;
+  }
+  #selector p {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 20px;
+  }
   #contenedor-selector a {
     display: block;
     margin-bottom: 10px; 
     text-decoration: none; 
     color: rgb(255, 0, 0);
     padding: 5px; 
+    align-items: center;
 }
 
 #contenedor-selector a:hover {
