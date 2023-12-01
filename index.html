@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <title>El juego del ahorcado</title>
-</head>
-<body>
+  </head>
+  <body>
+    
     <div id="selector">
-        <h4>Bienvenido al juego del ahorcado</h4>
-        <p>Escoge una tematica : </p>
-        <div id="contenedor-selector">
-            <a href="#" onclick="elegirTematica('animales')">Animales</a>
-            <a href="#" onclick="elegirTematica('coches')">Coches</a>
-            <a href="#" onclick="elegirTematica('marcasropa')">Marcas de ropa</a> 
-            <a href="#" onclick="elegirTematica('paises')">Paises</a>
-            <a href="#" onclick="elegirTematica('marcasdemotos')">Motos</a>
-        </div>
+      <h4>Bienvenido al juego del ahorcado</h4>
+      <div id="contenedor-selector">
+        <p>Escoge una tematica :</p>
+        <a href="#" onclick="elegirTematica('animales')">Animales</a>
+        <a href="#" onclick="elegirTematica('coches')">Coches</a>
+        <a href="#" onclick="elegirTematica('marcasropa')">Marcas de ropa</a>
+        <a href="#" onclick="elegirTematica('paises')">Paises</a>
+        <a href="#" onclick="elegirTematica('marcasdemotos')">Motos</a>
+      </div>
     </div>
 
     <div id="perdida">
-        <h1>Has perdido. Reinicia la pagina para poder volver ha jugar</h1>
+      <h1>Has perdido. Reinicia la pagina para poder volver ha jugar</h1>
     </div>
 
     <div id="victoria">
-        <h1>Muchas felicidades, has ganado.</h1>
-        <p>Si quieres volver a jugar reinicia la pagina :D</p>
+      <h1>Muchas felicidades, has ganado.</h1>
+      <p>Si quieres volver a jugar reinicia la pagina :D</p>
     </div>
 
     <div id="ahorcado">
-        <h1>El juego del ahorcado</h1>
-        <p>Escoge una letra te quedan <span id="intentos">0</span> intentos</p>
-        <div id="dibujo"> <img src="img/1.png" alt=""></div>
-        <p id="palabra">-</p>
-        <div id="teclado">
+      <h1>El juego del ahorcado</h1>
+      <p>Escoge una letra te quedan <span id="intentos">0</span> intentos</p>
+      <div id="dibujo"><img src="img/1.png" alt="" /></div>
+      <p id="palabra">-</p>
+      <div id="teclado">
         <div class="letra">A</div>
         <div class="letra">B</div>
         <div class="letra">C</div>
@@ -61,11 +62,11 @@
         <div class="letra">X</div>
         <div class="letra">Y</div>
         <div class="letra">Z</div>
-    </div>
-    <p>Has fallado <span id="errores">0</span> veces</p>
-    <p id="cronometro">00:00:00</p>
+      </div>
+      <p>Has fallado <span id="errores">0</span> veces</p>
+      <p id="cronometro">00:00:00</p>
     </div>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

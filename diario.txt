@@ -5,4 +5,8 @@ Por ahora lo que tengo es que los intentos se resten cada vez que pasan los siet
 Ya cuando el usuario pone una letra ya detecta que letras son correctas y que no, pero no se sobreescriben donde esta la palabra con guiones 
 
 29/11
-Hoy ya funciona cuando pones una letra correcta se muestre en la palabra, lo que quiero hacer es cuando el jugador acierte la palabra o el se fallen todos los intentos el juego se cierre
+Hoy ya funciona cuando pones una letra correcta se muestre en la palabra, lo que quiero hacer es cuando el jugador acierte la palabra o el se fallen todos los intentos el juego se acabe.
+
+1/12
+He configurado un poco el CSS y por ahora el JS por ahora no me planteo integrar nada en el codigo.
+Ya esta implementado el que cuando el jugador gane o pierda salgan los pop-ups de su consecutiva victoria/derrota.
