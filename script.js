@@ -1,4 +1,21 @@
-// Capturamos elementos del HTML
+// Función para obtener los datos desde el archivo JSON
+const obtenerDatosDesdeJSON = (archivo, callback) => {
+  const request = new XMLHttpRequest();
+
+  request.addEventListener('readystatechange', () => {
+      if (request.readyState == 4 && request.status == 200) {
+          const respuesta = JSON.parse(request.responseText);
+          callback(null, respuesta);
+      } else if (request.readyState === 4) {
+          callback("No se han podido obtener los datos", null);
+      }
+  });
+
+  request.open('GET', archivo);
+  request.send();
+}
+
+// Captura de elementos HTML
 const intentos = document.getElementById("intentos");
 const cronometro = document.getElementById("cronometro");
 const palabraElemento = document.getElementById("palabra");
@@ -9,28 +26,33 @@ const perdida = document.getElementById("perdida");
 const victoria = document.getElementById("victoria");
 const imagenAhorcado = document.getElementById("dibujo").querySelector("img");
 
-// Array de las letras que son correctas
+// Array de letras correctas
 let letrasCorrectas = [];
-// Definimos el máximo número de intentos
 let maxIntentos = 7;
-intentos.textContent = maxIntentos;
-// Segundos que han pasado
 let segundosTranscurridos = 0;
 const tiempoRestarIntento = 7;
-// Implementamos el cronómetro
 let tiempoInicio;
 let cronometroInterval;
-
-// Variable para almacenar la palabra seleccionada
 let palabraSeleccionada;
+let tematicas;
 
-// Para registrar la letra que el usuario presiona
-teclado.addEventListener("click", (e) => {
-  if (e.target.classList.contains("letra")) {
-    let letraUsada = e.target.textContent;
-    ComprobarLetra(letraUsada.toLowerCase()); // Convertir la letra a minúsculas para que la pueda leer
+// Llamada a la función para obtener las temáticas desde el archivo JSON
+obtenerDatosDesdeJSON('json/tematicas.json', (error, datos) => {
+  if (error) {
+      console.error('Error al obtener las temáticas:', error);
+  } else {
+      tematicas = datos;
+      console.log('Tematicas cargadas con éxito:', tematicas);
   }
 });
+// EventListener para el teclado
+teclado.addEventListener("click", (e) => {
+  if (e.target.classList.contains("letra")) {
+      let letraUsada = e.target.textContent;
+      ComprobarLetra(letraUsada.toLowerCase());
+  }
+});
+
 //El usuario inserta una letra
 function ComprobarLetra(letra) {
   if (palabraSeleccionada.includes(letra)) {
@@ -104,25 +126,14 @@ function rellenarCeros(valor) {
   return valor < 10 ? `0${valor}` : valor;
 }
 
-//Declaramos las temáticas
-const tematicas = {
-  animales: ["león", "elefante", "jirafa", "tigre", "perro", "gato", "pájaro"],
-  coches: ["tesla", "ford", "honda", "bmw", "audi", "toyota", "chevrolet"],
-  marcasropa: ["nike", "adidas", "gucci", "zara", "puma", "hym"],
-  paises: ["francia", "alemania", "italia", "japon", "china", "brasil"],
-  marcasdemotos: ["harley", "honda", "yamaha", "kawasaki", "suzuki", "Ducati", "BMW"],
-};
+
 
 //Para elegir temáticas
 function elegirTematica(tematica) {
   const palabras = tematicas[tematica];
-  //Coge una palabra/nombre que tiene la temática y
   palabraSeleccionada = palabras[Math.floor(Math.random() * palabras.length)];
-  //Chivato para mostrar la palabra seleccionada
-  console.log( "La palabra selecioanda es : " +palabraSeleccionada);
-  // Ocultar el pop-up
+  console.log("La palabra seleccionada es: " + palabraSeleccionada);
   selector.style.display = "none";
-
   mostrarPalabraConGuiones();
   iniciarCronometro();
 }
