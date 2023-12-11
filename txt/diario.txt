@@ -13,3 +13,6 @@ Ya esta implementado el que cuando el jugador gane o pierda salgan los pop-ups d
 
 5/12
 Hoy he implementado ya que las tematicas se guarden en un archivo JSON y funciona correctamente
+
+11/12
+Hoy estoy dando las ultimas pinceladas al proyecto y he implementado lo utlimo que faltaba que es que cuando el usuario inserta una letra correcta el temporizador se reinicia

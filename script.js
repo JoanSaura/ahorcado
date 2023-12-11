@@ -2,18 +2,18 @@
 const obtenerDatosDesdeJSON = (archivo, callback) => {
   const request = new XMLHttpRequest();
 
-  request.addEventListener('readystatechange', () => {
-      if (request.readyState == 4 && request.status == 200) {
-          const respuesta = JSON.parse(request.responseText);
-          callback(null, respuesta);
-      } else if (request.readyState === 4) {
-          callback("No se han podido obtener los datos", null);
-      }
+  request.addEventListener("readystatechange", () => {
+    if (request.readyState == 4 && request.status == 200) {
+      const respuesta = JSON.parse(request.responseText);
+      callback(null, respuesta);
+    } else if (request.readyState === 4) {
+      callback("No se han podido obtener los datos", null);
+    }
   });
 
-  request.open('GET', archivo);
+  request.open("GET", archivo);
   request.send();
-}
+};
 
 // Captura de elementos HTML
 const intentos = document.getElementById("intentos");
@@ -37,19 +37,19 @@ let palabraSeleccionada;
 let tematicas;
 
 // Llamada a la función para obtener las temáticas desde el archivo JSON
-obtenerDatosDesdeJSON('tematicas.json', (error, datos) => {
+obtenerDatosDesdeJSON("json/tematicas.json", (error, datos) => {
   if (error) {
-      console.error('Error al obtener las temáticas:', error);
+    console.error("Error al obtener las temáticas:", error);
   } else {
-      tematicas = datos;
-      console.log('Tematicas cargadas con éxito:', tematicas);
+    tematicas = datos;
+    console.log("Tematicas cargadas con éxito:", tematicas);
   }
 });
 // EventListener para el teclado
 teclado.addEventListener("click", (e) => {
   if (e.target.classList.contains("letra")) {
-      let letraUsada = e.target.textContent;
-      ComprobarLetra(letraUsada.toLowerCase());
+    let letraUsada = e.target.textContent;
+    ComprobarLetra(letraUsada.toLowerCase());
   }
 });
 
@@ -57,31 +57,32 @@ teclado.addEventListener("click", (e) => {
 function ComprobarLetra(letra) {
   if (palabraSeleccionada.includes(letra)) {
     letrasCorrectas.push(letra);
+    reiniciarCronometro();
     mostrarPalabraConGuiones();
     // Agrega la clase "correcta" a la letra seleccionada
-    teclado.querySelectorAll('.letra').forEach((element) => {
+    teclado.querySelectorAll(".letra").forEach((element) => {
       if (element.textContent.toLowerCase() === letra) {
-        element.classList.add('correcta');
+        element.classList.add("correcta");
       }
     });
   } else {
     restarIntento();
     errores.textContent = 7 - maxIntentos;
     // Agrega la clase "incorrecta" a la letra seleccionada
-    teclado.querySelectorAll('.letra').forEach((element) => {
+    teclado.querySelectorAll(".letra").forEach((element) => {
       if (element.textContent.toLowerCase() === letra) {
-        element.classList.add('incorrecta');
+        element.classList.add("incorrecta");
       }
     });
   }
 }
-
+//Inicializar cronometro
 function iniciarCronometro() {
   tiempoInicio = new Date();
   // Actualiza el cronómetro cada segundo
   cronometroInterval = setInterval(actualizarCronometro, 1000);
 }
-
+//Actualizar cronometro, intentos y texto
 function actualizarCronometro() {
   const tiempoActual = new Date();
   const diferencia = tiempoActual - tiempoInicio;
@@ -102,6 +103,13 @@ function actualizarCronometro() {
   cronometro.textContent = tiempoFormateado;
 }
 
+// Función para reiniciar el cronómetro
+function reiniciarCronometro() {
+  clearInterval(cronometroInterval);
+  segundosTranscurridos = 0;
+  iniciarCronometro();
+}
+
 // Función para mostrar la palabra con guiones bajos y letras adivinadas
 function mostrarPalabraConGuiones() {
   let palabraMostrada = "";
@@ -117,7 +125,6 @@ function mostrarPalabraConGuiones() {
   // Verificamos si el jugador ha adivinado todas las letras
   if (!palabraMostrada.includes("_")) {
     HasGanado();
-    
   }
 }
 
@@ -145,7 +152,7 @@ function restarIntento() {
 
   if (maxIntentos === 0) {
     ocultarElementos();
-    perdida.style.display = 'flex'; 
+    perdida.style.display = "flex";
   }
   // Verificamos si se han agotado los intentos
   if (maxIntentos == 0) {
@@ -155,35 +162,37 @@ function restarIntento() {
 
 //Lanzar pantalla de victoria
 function HasGanado() {
-  ocultarElementos(); 
-  victoria.style.display = 'flex';
-  clearInterval(cronometroInterval); 
+  ocultarElementos();
+  victoria.style.display = "flex";
+  clearInterval(cronometroInterval);
 }
 
-  // Oculta los elementos al ganar/perder
+// Oculta los elementos al ganar/perder
 function ocultarElementos() {
-  intentos.style.display = 'none';
-  cronometro.style.display = 'none';
-  palabraElemento.style.display = 'none';
-  teclado.style.display = 'none';
-  errores.style.display = 'none';
-  selector.style.display = 'none';
-  perdida.style.display = 'none';
-  victoria.style.display = 'none';
-  imagenAhorcado.style.display = 'none';
+  intentos.style.display = "none";
+  cronometro.style.display = "none";
+  palabraElemento.style.display = "none";
+  teclado.style.display = "none";
+  errores.style.display = "none";
+  selector.style.display = "none";
+  perdida.style.display = "none";
+  victoria.style.display = "none";
+  imagenAhorcado.style.display = "none";
 }
 function obtenerEstadisticas() {
-  const estadisticas = localStorage.getItem('estadisticas');
-  return estadisticas ? JSON.parse(estadisticas) : {
-    partidasJugadas: 0,
-    victorias: 0,
-    tiempoTotal: 0,
-  };
+  const estadisticas = localStorage.getItem("estadisticas");
+  return estadisticas
+    ? JSON.parse(estadisticas)
+    : {
+        partidasJugadas: 0,
+        victorias: 0,
+        tiempoTotal: 0,
+      };
 }
 
 // Función para guardar estadísticas en el almacenamiento local
 function guardarEstadisticas(estadisticas) {
-  localStorage.setItem('estadisticas', JSON.stringify(estadisticas));
+  localStorage.setItem("estadisticas", JSON.stringify(estadisticas));
 }
 
 // Función para actualizar estadísticas después de cada partida
@@ -198,7 +207,8 @@ function actualizarEstadisticas(victoria, tiempo) {
   // Sumar el tiempo total de juego
   estadisticas.tiempoTotal += tiempo;
   // Calcular el tiempo promedio de juego
-  estadisticas.tiempoPromedio = estadisticas.tiempoTotal / estadisticas.partidasJugadas;
+  estadisticas.tiempoPromedio =
+    estadisticas.tiempoTotal / estadisticas.partidasJugadas;
   // Guardar las estadísticas actualizadas en localStorage
   guardarEstadisticas(estadisticas);
 }
