@@ -1,0 +1,18 @@
+Explicación de las funciones:
+
+MostrarPalabraConGuiones(): Esta función hace un bucle que reescribe toda la palabra elegida y la convierte en guiones
+ComprobarLetra(letra): En esta función se le pasa el parámetro letra que es la que nosotros queremos comprobar, si la letra escogida es correcta, se rescribirá el o los espacios en cuestión que tengan esa letra, si nos se le resta un intento al jugador
+IniciarCronometro(): Crea un cronómetro para posteriormente agregarle un intervalo llamando a la función "actualizarCronometro"
+ActualizarCronometro(): Crea una fecha que es el tiempo actual y ajusta los segundos y minutos, si el jugador en siete segundos no ha puesto nada se le restará un intento. Después de eso escribe donde está capturado el elemento HTML llamado "cronometro" el tiempo actual del juego
+rellenarCeros(): Esta función toma un número como entrada y lo devuelve en formato cadena
+elegirTematica(): Toma en cuenta que temática elige el usuario en el selector y de esa temática elige una palabra al azar, la palabra se muestra en la consola
+restarIntento(): Como su nombre indica quita un intento del contador total y actualiza tanto el texto como la imagen del ahorcado, si el usuario falla los 7 intentos se muestra la pantalla de derrota
+HasGanado(): Se muestra la pantalla de victoria y se ocultan el resto de elementos
+ocultarElementos(): Quita todos los estilos visibles para que solo se muestre la pantalla de victoria o derrota
+obtenerEstadisticas(): Devuelve las estadísticas del jugador que están guardados en el LocalStorage
+guardarEstadisticas(): Almacena las estadisticas del jugador dentro del LocalStorage
+actualizarEstadisitcas() : Actualiza las victorias del jugador, las partidas guardadas, el tiempo jugado y su tiempo promedio jugado, luego se guardan.
+
+Explicación de eventos:
+El primer evento es para cargar el archivo JSON de las temáticas
+El segundo evento es cuando el usuario elige una tecla para comprobar si la letra es correcta o incorrecta

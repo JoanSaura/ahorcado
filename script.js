@@ -37,7 +37,7 @@ let palabraSeleccionada;
 let tematicas;
 
 // Llamada a la función para obtener las temáticas desde el archivo JSON
-obtenerDatosDesdeJSON('json/tematicas.json', (error, datos) => {
+obtenerDatosDesdeJSON('tematicas.json', (error, datos) => {
   if (error) {
       console.error('Error al obtener las temáticas:', error);
   } else {
@@ -126,8 +126,6 @@ function rellenarCeros(valor) {
   return valor < 10 ? `0${valor}` : valor;
 }
 
-
-
 //Para elegir temáticas
 function elegirTematica(tematica) {
   const palabras = tematicas[tematica];
@@ -154,11 +152,14 @@ function restarIntento() {
     clearInterval(cronometroInterval);
   }
 }
+
 //Lanzar pantalla de victoria
 function HasGanado() {
   ocultarElementos(); 
   victoria.style.display = 'flex';
+  clearInterval(cronometroInterval); 
 }
+
   // Oculta los elementos al ganar/perder
 function ocultarElementos() {
   intentos.style.display = 'none';
@@ -170,4 +171,34 @@ function ocultarElementos() {
   perdida.style.display = 'none';
   victoria.style.display = 'none';
   imagenAhorcado.style.display = 'none';
+}
+function obtenerEstadisticas() {
+  const estadisticas = localStorage.getItem('estadisticas');
+  return estadisticas ? JSON.parse(estadisticas) : {
+    partidasJugadas: 0,
+    victorias: 0,
+    tiempoTotal: 0,
+  };
+}
+
+// Función para guardar estadísticas en el almacenamiento local
+function guardarEstadisticas(estadisticas) {
+  localStorage.setItem('estadisticas', JSON.stringify(estadisticas));
+}
+
+// Función para actualizar estadísticas después de cada partida
+function actualizarEstadisticas(victoria, tiempo) {
+  const estadisticas = obtenerEstadisticas();
+  // Incrementar el número total de partidas jugadas
+  estadisticas.partidasJugadas++;
+  // Incrementar el número de victorias si la partida fue ganada
+  if (victoria) {
+    estadisticas.victorias++;
+  }
+  // Sumar el tiempo total de juego
+  estadisticas.tiempoTotal += tiempo;
+  // Calcular el tiempo promedio de juego
+  estadisticas.tiempoPromedio = estadisticas.tiempoTotal / estadisticas.partidasJugadas;
+  // Guardar las estadísticas actualizadas en localStorage
+  guardarEstadisticas(estadisticas);
 }
